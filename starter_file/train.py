@@ -12,8 +12,8 @@ from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 
 # Load dataset into data frame,
-ws = Workspace.get("--")
-ds = Dataset.get_by_name(ws, name='--')
+ws = Workspace.get("quick-starts-ws-133986")
+ds = Dataset.get_by_name(ws, name='Heart Failure Dataset')
 data = ds.to_pandas_dataframe()
 
 def clean_data(data):
