@@ -11,8 +11,8 @@ from azureml.core import Experiment, Workspace
 from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 
-# Load dataset into data frame,
-ws = Workspace.get("quick-starts-ws-133986")
+run = Run.get_context()
+ws = run.experiment.workspace
 ds = Dataset.get_by_name(ws, name='Heart Failure Dataset')
 data = ds.to_pandas_dataframe()
 
@@ -28,9 +28,6 @@ def clean_data(data):
 x, y = clean_data(data)
 #Split data into train and test sets.
 x_train, x_test, y_train, y_test=train_test_split(x, y)
-
-
-run = Run.get_context()
 
 
 def main():
