@@ -1,0 +1,187 @@
+Creating Compute
+from azureml.core.compute import ComputeTarget, AmlCompute
+from azureml.core.compute_target import ComputeTargetException
+#Create compute cluster
+
+
+# choose a name for your cluster
+cluster_name= "cpu-cluster"
+
+try:
+    compute_target = ComputeTarget(workspace=ws , name=cluster_name)
+    print('Found existing compute target')
+except ComputeTargetException:
+    print('Creating a new compute target ...')
+    compute_config = AmlCompute.provisioning_configuration(vm_size='Standard_D2_V2' , max_nodes=4)
+    #create the cluster
+    cpu_cluster=ComputeTarget.create(ws,cluster_name,compute_config)
+    print('cpu-cluster has been created')
+
+
+
+DataSet
+ws = Workspace.from_config()
+experiment_name = 'mlexphyper'
+
+experiment=Experiment(ws, experiment_name)
+
+
+
+
+
+
+
+#save the best model
+model =best_run.register_model(model_name = 'heart-disease-hyper'
+, model_path='./outputs/model.pkl')
+model.download(target_dir="outputs", exist_ok=True)
+
+he accuracy of hyperdrive model is 87% 
+As the hyperdrive model has lower accuracy we do not deploy it.
+
+AutoML:
+from azureml.core import Workspace, Experiment
+from azureml.core.compute import ComputeTarget, AmlCompute
+from azureml.core.compute_target import ComputeTargetException
+from azureml.widgets import RunDetails
+from azureml.train.hyperdrive.run import PrimaryMetricGoal
+import os
+import joblib
+from azureml.core.dataset import Dataset
+from azureml.train.automl import AutoMLConfig
+from azureml.core.model import Model
+from azureml.core.webservice import AciWebservice
+from azureml.core.environment import Environment
+from azureml.core.model import InferenceConfig
+from azureml.core.environment import Environment
+import requests
+import json
+from azureml.core.conda_dependencies import CondaDependencies
+import sklearn
+from azureml.core.model import Model
+from azureml.automl.runtime.onnx_convert import OnnxConverter
+
+
+
+ds = Dataset.get_by_name(ws, name='Heart-Failure')
+data = ds.to_pandas_dataframe()
+data.head()
+
+
+training_data, test_data = data.random_split(percentage=0.8)
+
+
+automl_settings = {
+    "experiment_timeout_minutes": 30,
+    "max_concurrent_iterations": 5,
+}
+
+
+automl_config = AutoMLConfig(
+    task='classification',
+    primary_metric='accuracy',
+    training_data= training_data,
+    label_column_name ='DEATH-EVENT',
+    n_cross_validations=2,
+    iterations=5,
+    enable_onnx_compatible_models=True,
+    **automl_settings
+    )
+
+Automl_run = experiment.submit(config=automl_config, show_output=True)
+
+
+
+RunDetails(Automl_run).show()
+
+
+
+
+# Retrieve and save your best automl model.
+
+
+best_automl_run = Automl_run.get_output()
+print('Best Run: ',best_automl_run)
+
+best_automl_run,onnx_model = Automl_run.get_output(return_onnx_model=True)
+OnnxConverter.save_onnx_model(onnx_model,file_path="./automl_model.onnx")
+
+
+#Create the Test Data into pandas_dataframe
+df_test = test_data.to_pandas_dataframe()
+x_test = df_test.drop(['DEATH_EVENT'], axis=1)
+
+Death_Event =onnx_model.predict(x_test[0:5])
+print('Predicted death event: ',Death_Event) 
+
+#Register the best automl model,
+automl_model =best_automl_run.register_model(model_name = 'automl_best_model', model_path='./outputs/automl_model.pkl')
+
+
+best_auto_ml.download_file('outputs/scoring_file_v_1_0_0.py', 'outputs/score_aml.py')
+
+inference_config = InferenceConfig(entry_script=score_aml.py, environment=best_automl_run.get_environment())
+
+
+
+
+#Local Deployment
+from azureml.core.webservice import LocalWebservice
+local_config = LocalWebservice.deploy_configuration(port=9000)
+local_service = Model.deploy(ws, "test", [automl_model], inference_config, local_config)
+local_service.wait_for_deployment(show_output=True)
+
+#Set up the deployment_config as webservice
+aci_config = AciWebservice.deploy_configuration(cpu_cores=1, memory_gb=1, enable_app_insights=True)
+
+#Deploy the model
+service = Model.deploy(
+    workspace = ws,
+    name = "Heart Failure Predection",
+    models = [automl_model],
+    inference_config = inference_config,
+    deployment_config = aci_config, overwrite=True)
+
+#wait until deployment is complete
+service.wait_for_deployment(show_output = True)
+
+model_uri = service.scoring_uri()
+
+import requests
+scoring_uri=model_uri
+key=''
+headers = {'Content-Type': 'application/json'}
+# If authentication is enabled, set the authorization header
+#headers['Authorization'] = f'Bearer {key}'
+data = {"data":
+        [
+          {
+            "age": 63,
+            "sex": 1,
+            "cp": 3,
+            "trestbps": 145,
+            "chol": 233,
+            "fbs": 1,
+            "restecg": 0,
+            "thalach": 150,
+            "exang": 0,
+            "oldpeak": 2.3,
+            "slope": 0,
+            "ca": 0,
+            "thal": 1,
+          }
+      ]
+    }
+test_sample = json.dumps(data)
+
+
+resp = requests.post(scoring_uri, test_sample, headers=headers)
+print(resp.json())
+
+
+
+#Print the webservice logs
+print(service.get_logs())
+
+#Delete the service
+service.delete()
