@@ -8,24 +8,8 @@ This project will focus on predicting heart disease using different tools availa
 
 ### Overview
 The data used for training is the Heart Disease UCI downloaded from Kaggle. This database contains 76 attributes, but all published experiments refer to using a subset of 14 of them. In particular, the Cleveland database is the only one that has been used by ML researchers to this date. This is a classification problem, with input features as a variety of parameters, and the target variable DEATH_EVENT which is a binary variable, predicting whether heart disease is present or not (1=yes, 0=no). The input features along with meanings, measurement units, and intervals of each feature as described below:
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6998201/table/Tab1/?report=objectonly
-Feature	Explanation	Measurement	Range
-Age	Age of the patient	Years	[40,..., 95] 
-Anaemia	Decrease of red blood cells or hemoglobin	Boolean	0, 1
-High blood pressure	If a patient has hypertension	Boolean	0, 1
-Creatinine phosphokinase	Level of the CPK enzyme in the blood	mcg/L	[23,..., 7861]
-(CPK)			
-Diabetes	If the patient has diabetes	Boolean	0, 1
-Ejection fraction	Percentage of blood leaving	Percentage	[14,..., 80]
-	the heart at each contraction		
-Sex	Woman or man	Binary	0, 1
-Platelets	Platelets in the blood	kiloplatelets/mL	[25.01,..., 850.00]
-Serum creatinine	Level of creatinine in the blood	mg/dL	[0.50,..., 9.40]
-Serum sodium	Level of sodium in the blood	mEq/L	[114,..., 148]
-Smoking	If the patient smokes	Boolean	0, 1
-Time	Follow-up period	Days	[4,...,285]
 
-
+![Capture88](https://user-images.githubusercontent.com/52258731/104820811-7c3a0980-5848-11eb-8315-5ab393c80209.JPG)
 
 ### Task
 We used two different Machine Learning approaches: Auto ML and Hyperparameter tuning to classify whether a person is suffering from heart disease or not. We also determined the best model, deployed and used it to see how the model is working.
@@ -54,11 +38,11 @@ The best model obtained through AutoML is VotingEnsemble model which has an accu
 ![Picture1](https://user-images.githubusercontent.com/52258731/104819266-72f76f80-583d-11eb-9a92-d0be147fc97f.png)
 
 Parameters:
-   AUC_macro - 91.37%
-   AUC_micro - 93.46%
-   AUC_weighted - 91.37%
+   - AUC_macro - 91.37%
+   - AUC_micro - 93.46%
+   - AUC_weighted - 91.37%
 
-The accuarcy could have been improve by increasing theexperiment_timeout_minutes parameter as will run the automl for longer which may increase its accuracy. Also, it could be improve by dropping one or two features that might not be as helpful. 
+The accuarcy could be improved by increasing theexperiment_timeout_minutes parameter as will run the automl for longer which may increase its accuracy. Also, it could be improved by dropping one or two features that might not be as helpful. 
 
 Following are screenshots of the RunDetails widget as well as a screenshot of the best model trained with it's parameters:
 
@@ -107,7 +91,7 @@ Following are screenshots of the RunDetails widget as well as a screenshot of th
 
 ### Best model and run_id
 
-![Picture9](https://user-images.githubusercontent.com/52258731/104819411-59a2f300-583e-11eb-8cf6-a6397a251277.png
+![Picture9](https://user-images.githubusercontent.com/52258731/104819411-59a2f300-583e-11eb-8cf6-a6397a251277.png)
 
 ## Model Deployment 
 We decide to deploy the best Auto-ml Model. The best model is registered and then deployed as a Webservice on Azure Container Instances.The model endpoint was queried by sending a post request to the model over the REST URL.
