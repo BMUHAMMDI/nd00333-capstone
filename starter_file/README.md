@@ -2,7 +2,7 @@
 
 # Capstone Project - Azure Machine Learning Engineer 
    ## Heart Failure Predection 
-This project will focus on predicting heart disease using different tools available in AzureML framework. This is an opportunity to use the knowledge we have obtained from this Nanodegree to solve an interesting problem. In this project, you will create two models: one using Automated ML and one customized model whose hyperparameters are tuned using HyperDrive. We will then compare the performance of both the models and deploy the best performing model.
+This project will focus on predicting heart disease using different tools available in AzureML framework. This is an opportunity to use the knowledge we have obtained from this Nanodegree to solve this problem. In this project, we will create two models: one using Automated ML and one customized model whose hyperparameters are tuned using HyperDrive. We will then compare the performance of both the models and deploy the best performing model.
   
 ## Dataset
 
