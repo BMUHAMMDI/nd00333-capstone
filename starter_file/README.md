@@ -42,7 +42,7 @@ Parameters:
    - AUC_micro - 93.46%
    - AUC_weighted - 91.37%
 
-The accuarcy could be improved by increasing theexperiment_timeout_minutes parameter as will run the automl for longer which may increase its accuracy. Also, it could be improved by dropping one or two features that might not be as helpful. 
+The accuarcy could be improved by increasing the experiment_timeout_minutes parameter as will run the automl for longer which may increase its accuracy. Also, it could be improved by dropping one or two features that might not be as helpful. 
 
 Following are screenshots of the RunDetails widget as well as a screenshot of the best model trained with it's parameters:
 
@@ -105,11 +105,9 @@ Following are screenshots of the successfully deployed model and the service req
 ### Service Request
 Here is a shot of the inference request sent to the deployed model and how it returned the value [1], which means the model is running and our test patient has a heart disease.
 
------------images
+![Capture11](https://user-images.githubusercontent.com/52258731/104838984-6de30080-58cf-11eb-9b3d-9e5a359b870d.JPG)
 
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
-- A working model
-- Demo of the deployed  model
-- Demo of a sample request sent to the endpoint and its response
+
+https://www.youtube.com/watch?v=RQgC5DFm5vk&feature=youtu.be
 
