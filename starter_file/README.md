@@ -37,10 +37,20 @@ The best model obtained through AutoML is VotingEnsemble model which has an accu
 
 ![Picture1](https://user-images.githubusercontent.com/52258731/104819266-72f76f80-583d-11eb-9a92-d0be147fc97f.png)
 
-Parameters:
-   - AUC_macro - 91.37%
-   - AUC_micro - 93.46%
-   - AUC_weighted - 91.37%
+Parameters (we get the parameters details from get_output() method ):
+ - min_child_weight=0,
+ - min_split_gain=0.42105263157894735,
+ - n_estimators=25,
+ - n_jobs=1,num_leaves=191,
+ - objective=None,
+ - random_state=None,
+ - reg_alpha=0.15789473684210525,
+ - reg_lambda=0,
+ - silent=True,
+ - subsample=1,
+ - subsample_for_bin=200000,
+ - subsample_freq=0,
+ - verbose=-10
 
 The accuarcy could be improved by increasing the experiment_timeout_minutes parameter as will run the automl for longer which may increase its accuracy. Also, it could be improved by dropping one or two features that might not be as helpful. 
 
@@ -109,5 +119,5 @@ Here is a shot of the inference request sent to the deployed model and how it re
 
 ## Screen Recording
 
-https://www.youtube.com/watch?v=RQgC5DFm5vk&feature=youtu.be
+https://www.youtube.com/watch?v=tFuW24AZFXw
 
