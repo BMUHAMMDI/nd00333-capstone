@@ -117,7 +117,5 @@ Here is a shot of the inference request sent to the deployed model and how it re
 
 ![Capture11](https://user-images.githubusercontent.com/52258731/104838984-6de30080-58cf-11eb-9b3d-9e5a359b870d.JPG)
 
-## Screen Recording
 
-https://www.youtube.com/watch?v=tFuW24AZFXw
 
